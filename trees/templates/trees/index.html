@@ -1,0 +1,40 @@
+{% load trees_extra %}
+
+<!doctype html>
+<html lang='en-us'>
+  <head>
+    <meta charset="utf-8">
+    <title>DjangoCon Europe 2021 - Migrations Workshop</title>
+    <style>
+      body { text-align: center }
+    </style>
+  </head>
+  <body>
+    <h1>My forest is composed of</h1>
+    <ul>
+      {% for tree in trees %}
+        <li>
+          {{ tree.name }}
+          {% if tree|hasattribute:'height' %}
+            (
+             Height: {{ tree.height }} -
+             {% if tree|hasattribute:'planted_on' %}
+               Planted On: {{ tree.planted_on }}
+             {% elif tree|hasattribute:'plant_year' %}
+               Plant Year: {{ tree.plant_year }}
+             {% endif %}
+            )
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+
+    <hr>
+    <h1>Create tree</h1>
+    <form action="/forest/" method="post">
+      {% csrf_token %}
+      {{ form }}
+      <input type="submit" value="Create">
+    </form>
+  </body>
+</html>
